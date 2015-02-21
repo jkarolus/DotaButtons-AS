@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.jakobkarolus.dotabuttons.DotaButtons" >
+
+    <item
+        android:id="@+id/action_info"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_info"/>
+
+</menu>
+<!-- From: file:/C:/Develop/AndroidStudio/DotaButtons/app/src/main/res/menu/dota_buttons.xml -->

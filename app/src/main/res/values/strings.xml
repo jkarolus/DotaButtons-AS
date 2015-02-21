@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DotaButtons</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_info">Info</string>
+    <string name="image_hero">Image of hero</string>
+    <string name="back">Back</string>
+    
+
+</resources>
