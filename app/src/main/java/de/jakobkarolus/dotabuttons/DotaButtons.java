@@ -1,39 +1,17 @@
 package de.jakobkarolus.dotabuttons;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
-import de.jakobkarolus.dotabuttons.io.HeroResponseParser;
-import de.jakobkarolus.dotabuttons.layout.CustomizedArrayAdapter;
-import de.jakobkarolus.dotabuttons.model.HeroResponse;
+
+import de.jakobkarolus.dotabuttons.fragments.ListFragment;
 
 /**
  * custom {@link ListActivity} that provides access to our hero responses
@@ -41,100 +19,29 @@ import de.jakobkarolus.dotabuttons.model.HeroResponse;
  * @author Jakob
  *
  */
-public class DotaButtons extends ListActivity{
+public class DotaButtons extends Activity{
 	
 	private static final String TAG = DotaButtons.class.getName();
 	public static final String DOTA_2 = "Dota 2";
 	public static final String DOTA_2_REPORTER = "Reporter";
+    public static final String SEND_AUDIO = "sendAudio";
 
-	
-	private CustomizedArrayAdapter buttonsReporter;
-	private CustomizedArrayAdapter buttonsDota;
-	
-	private boolean sendAudio;
-	private int flags;
-
-	private MediaPlayer player;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dota_buttons);
+
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ListFragment frag = new ListFragment();
+            Bundle args = new Bundle();
+            args.putBoolean(SEND_AUDIO, getIntent().getAction() == "com.whatsapp.action.WHATSAPP_RECORDING");
+            frag.setArguments(args);
+            ft.add(R.id.container, frag);
+            ft.commit();
+        }
 		
-		loadResponses();
-		setupMediaPlayer();
-		setupActionBar();
-		
-		Intent intent = getIntent();
-		if(intent.getAction() == "com.whatsapp.action.WHATSAPP_RECORDING"){
-			sendAudio = true;
-			flags = intent.getFlags();
-		}
-		else
-			sendAudio = false;
-		
-	}
-
-
-	private void setupMediaPlayer() {
-		//init MediaPlayer
-		player = new MediaPlayer();
-		player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-			
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				releasePlayer();
-			}
-		});
-		player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-			
-			@Override
-			public void onPrepared(MediaPlayer mp) {
-				mp.start();
-			}
-		});
-	}
-
-
-	private void setupActionBar() {
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
-		// Create a tab listener that is called when the user changes tabs.
-	    ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-			@Override
-			public void onTabSelected(Tab tab, FragmentTransaction ft) {
-				//cancel playback
-				releasePlayer();
-
-				if(tab.getText().equals(DOTA_2))
-					setListAdapter(buttonsDota);
-				else
-					setListAdapter(buttonsReporter);
-			}
-
-			@Override
-			public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-				
-			}
-
-			@Override
-			public void onTabReselected(Tab tab, FragmentTransaction ft) {
-				
-			}
-	    };
-	    
-		actionBar.addTab(actionBar.newTab().setText(DOTA_2_REPORTER).setTabListener(tabListener));
-		actionBar.addTab(actionBar.newTab().setText(DOTA_2).setTabListener(tabListener));
-	}
-
-
-	private void loadResponses() {
-		//load entries and associate with ArrayAdapter
-		List<HeroResponse> entriesReporter = HeroResponseParser.loadReporterResponseData();
-		buttonsReporter =  new CustomizedArrayAdapter(this, R.layout.dota_buttons_list_entry, entriesReporter);
-		List<HeroResponse> entriesDota = HeroResponseParser.loadDotaHeroResponseData();
-		buttonsDota =  new CustomizedArrayAdapter(this, R.layout.dota_buttons_list_entry, entriesDota);
 	}
 
 
@@ -162,7 +69,7 @@ public class DotaButtons extends ListActivity{
 	 * @author Jakob
 	 * 
 	 */
-	public class InfoDialog extends DialogFragment {
+	public static class InfoDialog extends DialogFragment {
 
 
 		@Override
@@ -170,7 +77,7 @@ public class DotaButtons extends ListActivity{
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle("DotaButtons");
-			builder.setMessage("By: Jakob Karolus\nVersion 1.2");
+			builder.setMessage("By: Jakob Karolus\nVersion 1.3");
 			builder.setNegativeButton(R.string.back,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
@@ -180,93 +87,6 @@ public class DotaButtons extends ListActivity{
 
 			return builder.create();
 		}
-	}
-	
-	@Override
-	protected void onStop() {
-		releasePlayer();
-		super.onStop();
-	}
-
-	
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		
-		super.onListItemClick(l, v, position, id);
-		HeroResponse entry = (HeroResponse) getListView().getItemAtPosition(position);
-		
-		//cancel previous playback
-		releasePlayer();
-		
-		if(!sendAudio){
-		
-			//initialize player with new HeroResponse and start playing
-			 try {
-		            AssetFileDescriptor afd = getApplicationContext().getResources().openRawResourceFd(entry.getSoundFile());
-		            if (afd == null){
-		            	Toast.makeText(getApplicationContext(), "Couldn't decode media file", Toast.LENGTH_SHORT).show();
-		            	return;
-		            }
-	
-		            player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-		            afd.close();
-		            player.prepareAsync();	            
-		            
-		        } catch (IOException ex) {
-		            Log.d(TAG, "create failed:", ex);
-		            // fall through
-		        } catch (IllegalArgumentException ex) {
-		            Log.d(TAG, "create failed:", ex);
-		           // fall through
-		        } catch (SecurityException ex) {
-		            Log.d(TAG, "create failed:", ex);
-		            // fall through
-		        }
-		}
-		else{
-			
-			String fileName= getExternalCacheDir().getAbsolutePath() + "/" + entry.getSoundFile() + ".mp3";
-
-			try{
-				InputStream in = getResources().openRawResource(entry.getSoundFile());
-				FileOutputStream out = new FileOutputStream(fileName, false);
-
-				byte[] buff = new byte[1024];
-			    int read = 0;
-
-			    try {
-			       while ((read = in.read(buff)) > 0) {
-			          out.write(buff, 0, read);
-			       }
-			    } catch (IOException e) {
-					Toast.makeText(this, "Cant access media file!", Toast.LENGTH_SHORT).show();;
-				} finally {
-			         try {
-						in.close();
-				        out.close();
-					} catch (IOException e) {
-						Toast.makeText(this, "Cant access media file!", Toast.LENGTH_SHORT).show();;
-						}
-			    }
-				
-			} catch (FileNotFoundException e) {
-				Toast.makeText(this, "Cant access media file!", Toast.LENGTH_SHORT).show();;
-			}
-			
-
-			Intent intent = new Intent(Intent.ACTION_SEND, Uri.fromFile(new File(fileName)));
-			this.setResult(RESULT_OK, intent);
-			finish();
-		}
-		
-	}
-	
-	/**
-	 * resets the player upon finishing a playback or when interrupted
-	 * 
-	 */
-	private void releasePlayer(){
-		player.reset();
 	}
 
 }

@@ -10,7 +10,7 @@ package de.jakobkarolus.dotabuttons.model;
 public class HeroResponse {
 
 	private String response;
-	private Heros heroName;
+	private Heroes heroName;
 	private int soundFile;
 	
 	private boolean newVersion;
@@ -24,7 +24,7 @@ public class HeroResponse {
 		this.newVersion = newVersion;
 	}
 
-	public HeroResponse(String response, Heros heroName, int soundFile) {
+	public HeroResponse(String response, Heroes heroName, int soundFile) {
 		super();
 		this.response = response;
 		this.heroName = heroName;
@@ -32,7 +32,7 @@ public class HeroResponse {
 		this.newVersion = false;
 	}
 	
-	public HeroResponse(String response, Heros heroName, int soundFile, boolean newVersion) {
+	public HeroResponse(String response, Heroes heroName, int soundFile, boolean newVersion) {
 		super();
 		this.response = response;
 		this.heroName = heroName;
@@ -51,12 +51,12 @@ public class HeroResponse {
 	}
 
 
-	public Heros getHero() {
+	public Heroes getHero() {
 		return heroName;
 	}
 
 
-	public void setHero(Heros heroName) {
+	public void setHero(Heroes heroName) {
 		this.heroName = heroName;
 	}
 

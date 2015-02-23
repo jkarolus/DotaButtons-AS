@@ -1,15 +1,78 @@
 package de.jakobkarolus.dotabuttons.io;
 
-import static de.jakobkarolus.dotabuttons.model.Heros.*;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import de.jakobkarolus.dotabuttons.R;
 import de.jakobkarolus.dotabuttons.model.HeroResponse;
-import de.jakobkarolus.dotabuttons.model.Heros;
+import de.jakobkarolus.dotabuttons.model.Heroes;
+
+import static de.jakobkarolus.dotabuttons.model.Heroes.ABADDON;
+import static de.jakobkarolus.dotabuttons.model.Heroes.ALCHEMIST;
+import static de.jakobkarolus.dotabuttons.model.Heroes.ANCIENT_APPARITION;
+import static de.jakobkarolus.dotabuttons.model.Heroes.ANTIMAGE;
+import static de.jakobkarolus.dotabuttons.model.Heroes.AXE;
+import static de.jakobkarolus.dotabuttons.model.Heroes.BANE;
+import static de.jakobkarolus.dotabuttons.model.Heroes.BATRIDER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.BOUNTY_HUNTER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.BREWMASTER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.BRISTLEBACK;
+import static de.jakobkarolus.dotabuttons.model.Heroes.CLOCKWERK;
+import static de.jakobkarolus.dotabuttons.model.Heroes.CREEP;
+import static de.jakobkarolus.dotabuttons.model.Heroes.CRYSTAL_MAIDEN;
+import static de.jakobkarolus.dotabuttons.model.Heroes.DARK_SEER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.DAZZLE;
+import static de.jakobkarolus.dotabuttons.model.Heroes.EARTHSHAKER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.ENIGMA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.FACELESS_VOID;
+import static de.jakobkarolus.dotabuttons.model.Heroes.GLADOS;
+import static de.jakobkarolus.dotabuttons.model.Heroes.GYROCOPTER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.INVOKER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.JUGGERNAUT;
+import static de.jakobkarolus.dotabuttons.model.Heroes.KEEPER_OF_THE_LIGHT;
+import static de.jakobkarolus.dotabuttons.model.Heroes.KUNKKA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.LEGION_COMMANDER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.LINA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.LUNA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.MAGNUS;
+import static de.jakobkarolus.dotabuttons.model.Heroes.MEEPO;
+import static de.jakobkarolus.dotabuttons.model.Heroes.MIRANA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.NATURES_PROPHET;
+import static de.jakobkarolus.dotabuttons.model.Heroes.NECROPHOS;
+import static de.jakobkarolus.dotabuttons.model.Heroes.NIGHT_STALKER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.NYX_ASSASSIN;
+import static de.jakobkarolus.dotabuttons.model.Heroes.OGRE_MAGI;
+import static de.jakobkarolus.dotabuttons.model.Heroes.PUCK;
+import static de.jakobkarolus.dotabuttons.model.Heroes.PUDGE;
+import static de.jakobkarolus.dotabuttons.model.Heroes.PUGNA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.QUEEN_OF_PAIN;
+import static de.jakobkarolus.dotabuttons.model.Heroes.REPORTER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.RUBICK;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SHADOW_FIEND;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SHADOW_SHAMAN;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SHOPKEEPER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SKYWRATH_MAGE;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SLARDAR;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SLARK;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SNIPER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.STORM_SPIRIT;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SVEN;
+import static de.jakobkarolus.dotabuttons.model.Heroes.TECHIES;
+import static de.jakobkarolus.dotabuttons.model.Heroes.TEMPLAR_ASSASSIN;
+import static de.jakobkarolus.dotabuttons.model.Heroes.TERRORBLADE;
+import static de.jakobkarolus.dotabuttons.model.Heroes.TIDEHUNTER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.TIMBERSAW;
+import static de.jakobkarolus.dotabuttons.model.Heroes.TINKER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.TUSK;
+import static de.jakobkarolus.dotabuttons.model.Heroes.URSA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.WINDRANGER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.WITCH_DOCTOR;
+import static de.jakobkarolus.dotabuttons.model.Heroes.WRAITH_KING;
+import static de.jakobkarolus.dotabuttons.model.Heroes.ZEUS;
 
 /**
  * loads the available hero respoonses
@@ -19,60 +82,46 @@ import de.jakobkarolus.dotabuttons.model.Heros;
  */
 public class HeroResponseParser {
 	
-	
-	private static void sort(List<HeroResponse> entries){
-		
-		Collections.sort(entries, new Comparator<HeroResponse>(){
 
-			@Override
-			public int compare(HeroResponse lhs, HeroResponse rhs) {
-				Heros left = lhs.getHero();
-				Heros right = rhs.getHero();
-				
-				if(left.compareTo(right) == 0)
-					return lhs.getResponse().compareTo(rhs.getResponse());
-				
-				return left.compareTo(right);
-				
-			}
-			
-		});
-	}
-	
 	/**
-	 * loads hero responses of Dota 2 Reporter(hard-coded)
+	 * loads hero responses of Dota 2 Reporter(hard-coded)<br>
+     * Map is per hero, list per response
 	 * 
-	 * @return {@link List} of {@link HeroResponse} sorted alphabetically
+	 * @return {@link java.util.Map} of {@link List} of {@link HeroResponse} sorted alphabetically
 	 */
-	public static List<HeroResponse> loadReporterResponseData(){
-		
-		List<HeroResponse> entries = new Vector<HeroResponse>(); 
-		
-		entries.add(new HeroResponse("I don't like magic", ANTIMAGE, R.raw.anti_mage_dont_like_magic));
-		entries.add(new HeroResponse("Is this your card", ANTIMAGE, R.raw.anti_mage_is_this_your_card));
-		entries.add(new HeroResponse("This is a team game?", REPORTER, R.raw.reporter_this_is_a_team_game));
-		entries.add(new HeroResponse("Magic paper", REPORTER, R.raw.reporter_magic_paper));
-		entries.add(new HeroResponse("Hello, I'm Ymir the tusk.", TUSK, R.raw.tusk_hello));
+	public static Map<Heroes, List<HeroResponse>> loadReporterResponseData(){
+
+        List<HeroResponse> entries = new Vector<>();
+
+        entries.add(new HeroResponse("I don't like magic", ANTIMAGE, R.raw.anti_mage_dont_like_magic));
+        entries.add(new HeroResponse("Is this your card", ANTIMAGE, R.raw.anti_mage_is_this_your_card));
+        entries.add(new HeroResponse("Cleanup time!", ANTIMAGE, R.raw.anti_mage_cleanup_time));
+        entries.add(new HeroResponse("Steroid creeps", ANTIMAGE, R.raw.anti_mage_steroid_creeps));
+        entries.add(new HeroResponse("I have finished farming.", ANTIMAGE, R.raw.anti_mage_finished_farming));
+        entries.add(new HeroResponse("This is a team game?", REPORTER, R.raw.reporter_this_is_a_team_game));
+        entries.add(new HeroResponse("Magic paper", REPORTER, R.raw.reporter_magic_paper));
+        entries.add(new HeroResponse("F* your shit, I'm a siege creep.", REPORTER, R.raw.reporter_siege_creep));
+        entries.add(new HeroResponse("Demon edge, sacred relic", REPORTER, R.raw.reporter_divine_rapier));
+        entries.add(new HeroResponse("Regret my decision", REPORTER, R.raw.reporter_decision_regret));
+        entries.add(new HeroResponse("Terrorblade farming", REPORTER, R.raw.reporter_terror_farming));
+        entries.add(new HeroResponse("Hello, I'm Ymir the tusk.", TUSK, R.raw.tusk_hello));
+
 		entries.add(new HeroResponse("Shoot him!", ENIGMA, R.raw.engima_enemy_closing_in));
 		entries.add(new HeroResponse("Activate! Blink! Go!", ENIGMA, R.raw.engima_blink));
 		entries.add(new HeroResponse("Nyctasha", BANE, R.raw.bane_nyctasha));
-		entries.add(new HeroResponse("Engima in the jungle.", ENIGMA, R.raw.enigma_in_the_jungle));
+		entries.add(new HeroResponse("Engima in the jungle", ENIGMA, R.raw.enigma_in_the_jungle));
 		entries.add(new HeroResponse("Grand Magus.", RUBICK, R.raw.rubick_grand_magus));
 		entries.add(new HeroResponse("Got 'em", RUBICK, R.raw.rubick_got_em));
 		entries.add(new HeroResponse("What are you hookin' me for?", PUDGE, R.raw.pudge_creep_hook));
 		entries.add(new HeroResponse("Missing middle!", PUDGE, R.raw.pudge_lane_missing_02));
 		entries.add(new HeroResponse("Keep doin' what you're doin'", ENIGMA, R.raw.enigma_rubick_keep_doing));
 		entries.add(new HeroResponse("Rubick, you're a crazy f*, aren't you", ENIGMA, R.raw.engima_rubick_crazy));
-		entries.add(new HeroResponse("F* your shit, I'm a siege creep.", REPORTER, R.raw.reporter_siege_creep));
 		entries.add(new HeroResponse("Really good hooker", RUBICK, R.raw.rubick_good_hooker));
 		entries.add(new HeroResponse("Haha you're stunned!", ENIGMA, R.raw.enigma_haha_stunned));
-		entries.add(new HeroResponse("Cleanup time!", ANTIMAGE, R.raw.anti_mage_cleanup_time));
-		entries.add(new HeroResponse("I have finished farming.", ANTIMAGE, R.raw.anti_mage_finished_farming));
 		entries.add(new HeroResponse("The art of echo-location", FACELESS_VOID, R.raw.void_echo_location));
 		entries.add(new HeroResponse("Accept this and move on", RUBICK, R.raw.rubick_accept_and_move_on));
 		entries.add(new HeroResponse("Gank some fools", ENIGMA, R.raw.engima_gank_some_fools));
 		entries.add(new HeroResponse("Gee, I love living!", CREEP, R.raw.creep_love_living));
-		entries.add(new HeroResponse("Steroid creeps", ANTIMAGE, R.raw.anti_mage_steroid_creeps));
 		entries.add(new HeroResponse("Bristles on me back", BRISTLEBACK, R.raw.bristleback_bristles_on_back));
 		entries.add(new HeroResponse("Cotton candy", INVOKER, R.raw.invoker_cotton_candy));
 		entries.add(new HeroResponse("I don't even know how I got here", GYROCOPTER, R.raw.gyrocopter_how_i_got_here));
@@ -115,7 +164,6 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse("Rocket ships", ENIGMA, R.raw.enigma_rocket_ships));
 		entries.add(new HeroResponse("Meep mop defense system", RUBICK, R.raw.rubick_meep_mop));
 		entries.add(new HeroResponse("Meeega creeps", ENIGMA, R.raw.enigma_mega_creeps));
-		entries.add(new HeroResponse("Demon edge, sacred relic", REPORTER, R.raw.reporter_divine_rapier));
 		entries.add(new HeroResponse("Throw", GYROCOPTER, R.raw.gyrocopter_throw));
 		entries.add(new HeroResponse("The reason I lost", INVOKER, R.raw.invoker_reason_lost));
 		entries.add(new HeroResponse("Let's abandon", RUBICK, R.raw.rubick_abandon));
@@ -141,47 +189,101 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse("What's makin' all that ruckus", TERRORBLADE, R.raw.terrorblade_making_all_that_ruckus));
 		
 		//Version 1.1
-		boolean newVersion = true;
-		entries.add(new HeroResponse("Gooooold!", KUNKKA, R.raw.kunkka_gold, newVersion));
-		entries.add(new HeroResponse("Dota 1 thing", KUNKKA, R.raw.kunkka_dota1_thing, newVersion));
-		entries.add(new HeroResponse("Buuuurn", ENIGMA, R.raw.enigma_burn, newVersion));
-		entries.add(new HeroResponse("Retreat with an advantage", ENIGMA, R.raw.enigma_advantage, newVersion));
-		entries.add(new HeroResponse("Poor piggy", TIDEHUNTER, R.raw.tide_poor_piggy, newVersion));
-		entries.add(new HeroResponse("Blink dagger, where are you?", TIDEHUNTER, R.raw.tide_blink_dagger, newVersion));
-		entries.add(new HeroResponse("allergic to total ownage", TERRORBLADE, R.raw.terrorblade_total_ownage, newVersion));
-		entries.add(new HeroResponse("Regret my decision", REPORTER, R.raw.reporter_decision_regret, newVersion));
-		entries.add(new HeroResponse("Totally worth it", TERRORBLADE, R.raw.terrorblade_worth_it, newVersion));
-		entries.add(new HeroResponse("My own eidolons", RUBICK, R.raw.rubick_own_eidolons, newVersion));
-		entries.add(new HeroResponse("Oh gawd, oh man", ENIGMA, R.raw.enigma_oh_gawd_oh_man, newVersion));
-		entries.add(new HeroResponse("Super creeps", CREEP, R.raw.creep_super_creep, newVersion));
-		entries.add(new HeroResponse("Puny and regular", CREEP, R.raw.creep_puny_and_regular, newVersion));
-		entries.add(new HeroResponse("Wow amazing", ENIGMA, R.raw.enigma_amazing, newVersion));
-		entries.add(new HeroResponse("That was lame", JUGGERNAUT, R.raw.jugg_lame, newVersion));
-		entries.add(new HeroResponse("Chu Chu!", TIMBERSAW, R.raw.timbersaw_chu_chu, newVersion));
-		entries.add(new HeroResponse("Smoke train", TIMBERSAW, R.raw.timbersaw_smoke_train2, newVersion));
-		entries.add(new HeroResponse("Chu chu honk!", TIMBERSAW, R.raw.timbersaw_smoke_train, newVersion));
-		entries.add(new HeroResponse("Flying fuck", ENIGMA, R.raw.enigma_flying_fuck, newVersion));
-		entries.add(new HeroResponse("Just act normal", TIDEHUNTER, R.raw.tide_act_normal, newVersion));
-		entries.add(new HeroResponse("Here to save the ...", JUGGERNAUT, R.raw.jugg_safe_the_day, newVersion));
-		entries.add(new HeroResponse("Enigma kick", ENIGMA, R.raw.enigma_kick, newVersion));
-		entries.add(new HeroResponse("You and me Rubick", ENIGMA, R.raw.enigma_you_and_me, newVersion));
-		entries.add(new HeroResponse("Terrorblade farming", REPORTER, R.raw.reporter_terror_farming, newVersion));
-		entries.add(new HeroResponse("Fuck wards", ENIGMA, R.raw.enigma_fuck_wards, newVersion));
-		entries.add(new HeroResponse("Gameplay depth", ENIGMA, R.raw.enigma_gameplay_depth, newVersion));
-		entries.add(new HeroResponse("Sorry", TIDEHUNTER, R.raw.tidehunter_sorry, newVersion));
-		entries.add(new HeroResponse("Bloodstone", TIMBERSAW, R.raw.timbersaw_bloodstone, newVersion));
+		boolean newVersion = false;
+		entries.add(new HeroResponse("Gooooold!", KUNKKA, R.raw.kunkka_gold, false));
+		entries.add(new HeroResponse("Dota 1 thing", KUNKKA, R.raw.kunkka_dota1_thing, false));
+		entries.add(new HeroResponse("Buuuurn", ENIGMA, R.raw.enigma_burn, false));
+		entries.add(new HeroResponse("Retreat with an advantage", ENIGMA, R.raw.enigma_advantage, false));
+		entries.add(new HeroResponse("Poor piggy", TIDEHUNTER, R.raw.tide_poor_piggy, false));
+		entries.add(new HeroResponse("Blink dagger, where are you?", TIDEHUNTER, R.raw.tide_blink_dagger, false));
+		entries.add(new HeroResponse("Allergic to total ownage", TERRORBLADE, R.raw.terrorblade_total_ownage, false));
+		entries.add(new HeroResponse("Totally worth it", TERRORBLADE, R.raw.terrorblade_worth_it, false));
+		entries.add(new HeroResponse("My own eidolons", RUBICK, R.raw.rubick_own_eidolons, false));
+		entries.add(new HeroResponse("Oh gawd, oh man", ENIGMA, R.raw.enigma_oh_gawd_oh_man, false));
+		entries.add(new HeroResponse("Super creeps", CREEP, R.raw.creep_super_creep, false));
+		entries.add(new HeroResponse("Puny and regular", CREEP, R.raw.creep_puny_and_regular, false));
+		entries.add(new HeroResponse("Wow amazing", ENIGMA, R.raw.enigma_amazing, false));
+		entries.add(new HeroResponse("That was lame", JUGGERNAUT, R.raw.jugg_lame, false));
+		entries.add(new HeroResponse("Chu Chu!", TIMBERSAW, R.raw.timbersaw_chu_chu, false));
+		entries.add(new HeroResponse("Smoke train", TIMBERSAW, R.raw.timbersaw_smoke_train2, false));
+		entries.add(new HeroResponse("Chu chu honk!", TIMBERSAW, R.raw.timbersaw_smoke_train, false));
+		entries.add(new HeroResponse("Flying fuck", ENIGMA, R.raw.enigma_flying_fuck, false));
+		entries.add(new HeroResponse("Just act normal", TIDEHUNTER, R.raw.tide_act_normal, false));
+		entries.add(new HeroResponse("Here to save the ...", JUGGERNAUT, R.raw.jugg_safe_the_day, false));
+		entries.add(new HeroResponse("Enigma kick", ENIGMA, R.raw.enigma_kick, false));
+		entries.add(new HeroResponse("You and me Rubick", ENIGMA, R.raw.enigma_you_and_me, false));
+		entries.add(new HeroResponse("Fuck wards", ENIGMA, R.raw.enigma_fuck_wards, false));
+		entries.add(new HeroResponse("Gameplay depth", ENIGMA, R.raw.enigma_gameplay_depth, false));
+		entries.add(new HeroResponse("Sorry", TIDEHUNTER, R.raw.tidehunter_sorry, false));
+		entries.add(new HeroResponse("Bloodstone", TIMBERSAW, R.raw.timbersaw_bloodstone, false));
+        entries.add(new HeroResponse("Delaying the inevitable", ENIGMA, R.raw.enigma_delaying_inevitable, false));
 
-		sort(entries);
-		return entries;
+        //Version 1.3
+        newVersion = true;
+        entries.add(new HeroResponse("Noooo", TIDEHUNTER, R.raw.tide_noo, true));
+        entries.add(new HeroResponse("Mask on my mask", JUGGERNAUT, R.raw.jugg_mask_on_mask, true));
+        entries.add(new HeroResponse("Smack em", ENIGMA, R.raw.enigma_smack_em, true));
+        entries.add(new HeroResponse("Commended for Leadership", TIMBERSAW, R.raw.timber_commended, true));
+        entries.add(new HeroResponse("Your life is now validated", TIMBERSAW, R.raw.timber_life_validated, true));
+        entries.add(new HeroResponse("Commended for being forgiving", KUNKKA, R.raw.kunkka_forgiving, true));
+        entries.add(new HeroResponse("I liked the part where you pressed R", JUGGERNAUT, R.raw.jugger_part_pressed_r, true));
+        entries.add(new HeroResponse("Seeking commendations", KUNKKA, R.raw.kunkka_commendations, true));
+
+		return toMap(entries);
 		
 	}
 
-	/**
+    private static Map<Heroes, List<HeroResponse>> toMap(List<HeroResponse> entries) {
+
+        Map<Heroes, List<HeroResponse>> map = new TreeMap<Heroes, List<HeroResponse>>(new Comparator<Heroes>() {
+
+            @Override
+            public int compare(Heroes left, Heroes right) {
+                return left.compareTo(right);
+            }
+        });
+
+        sort(entries);
+
+        Heroes currentHero = entries.get(0).getHero();
+        List<HeroResponse> currentList = new Vector<>();
+
+        for(HeroResponse r : entries){
+            if(r.getHero() == currentHero)
+                currentList.add(r);
+            else{
+                map.put(currentHero, new Vector<HeroResponse>(currentList));
+                currentHero = r.getHero();
+                currentList.clear();
+                currentList.add(r);
+            }
+        }
+        return map;
+    }
+
+    private static List<HeroResponse> sort(List<HeroResponse> entries){
+        Collections.sort(entries, new Comparator<HeroResponse>() {
+            @Override
+            public int compare(HeroResponse lhs, HeroResponse rhs) {
+                Heroes left = lhs.getHero();
+                Heroes right = rhs.getHero();
+
+                if(left.compareTo(right) == 0)
+                    return lhs.getResponse().compareTo(rhs.getResponse());
+
+                return left.compareTo(right);
+            }
+        });
+        return entries;
+    }
+
+    /**
 	 * loads hero responses of Dota 2 (hard-coded)
+     * map is per hero, list per response
 	 * 
-	 * @return {@link List} of {@link HeroResponse} sorted alphabetically
+	 * @return {@ling Map} of {@link List} of {@link HeroResponse} sorted alphabetically
 	 */
-	public static List<HeroResponse> loadDotaHeroResponseData() {
+	public static Map<Heroes, List<HeroResponse>>  loadDotaHeroResponseData() {
 		
 		List<HeroResponse> entries = new Vector<HeroResponse>(); 
 
@@ -225,9 +327,9 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse("Axe happened", AXE, R.raw.axe_rival_22));
 		entries.add(new HeroResponse("Axe-actly", AXE, R.raw.axe_rival_23));
 		entries.add(new HeroResponse("Fought badly, died worse", AXE, R.raw.axe_kill_06));
-		entries.add(new HeroResponse("axe-amination", AXE, R.raw.axe_ally_12));
+		entries.add(new HeroResponse("Axe-amination", AXE, R.raw.axe_ally_12));
 		entries.add(new HeroResponse("Time for an re-en-axe-ment", AXE, R.raw.axe_fastres_01));
-		entries.add(new HeroResponse("bottling rune", AXE, R.raw.axe_bottle_04));
+		entries.add(new HeroResponse("Bottling rune", AXE, R.raw.axe_bottle_04));
 		entries.add(new HeroResponse("Laughter", BANE, R.raw.bane_battlebegins_01));
 		entries.add(new HeroResponse("Eh-haw", BATRIDER, R.raw.bat_battlebegins_01));
 		entries.add(new HeroResponse("Yeah girl", BATRIDER, R.raw.bat_move_08));
@@ -247,7 +349,7 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse("Want some of this?", BRISTLEBACK, R.raw.bristle_attack_18));
 		entries.add(new HeroResponse("Some goo for you", BRISTLEBACK, R.raw.bristle_nasal_goo_06));
 		entries.add(new HeroResponse("Suck it", BRISTLEBACK, R.raw.bristle_laugh_05));
-		entries.add(new HeroResponse("oopsy daisy", BRISTLEBACK, R.raw.bristle_lasthit_11));
+		entries.add(new HeroResponse("Oopsy daisy", BRISTLEBACK, R.raw.bristle_lasthit_11));
 		entries.add(new HeroResponse("Degree in mechanical domineering", CLOCKWERK, R.raw.ratt_respawn_10));
 		entries.add(new HeroResponse("I am a robot", CLOCKWERK, R.raw.ratt_respawn_18));
 		entries.add(new HeroResponse("Fun and games", CRYSTAL_MAIDEN, R.raw.cm_battlebegins_01));
@@ -258,7 +360,7 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse("Laughter", DARK_SEER, R.raw.dkseer_laugh_10));
 		entries.add(new HeroResponse("Dazzle!", DAZZLE, R.raw.dazz_ability_sfx_14));
 		entries.add(new HeroResponse("Fissure man", EARTHSHAKER, R.raw.erth_ability_fissure_03));
-		entries.add(new HeroResponse("Gonna pound your", EARTHSHAKER, R.raw.erth_attack_08));
+		entries.add(new HeroResponse("Gonna pound you", EARTHSHAKER, R.raw.erth_attack_08));
 		entries.add(new HeroResponse("Meeeeooowww", GYROCOPTER, R.raw.gyro_move_29));
 		entries.add(new HeroResponse("Gagagagaga", GYROCOPTER, R.raw.gyro_attack_18));
 		entries.add(new HeroResponse("Laughter", GYROCOPTER, R.raw.gyro_rocket_barrage_06));
@@ -432,8 +534,7 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse("What you're doing is wrong", GLADOS, R.raw.glados_killing_spree_ann_glados_kill_holy_03));
 		entries.add(new HeroResponse("Great teamwork", GLADOS, R.raw.glados_killing_spree_ann_glados_kill_ownage_01));
 		
-		sort(entries);
-		return entries;
+		return toMap(entries);
 
 	}
 
