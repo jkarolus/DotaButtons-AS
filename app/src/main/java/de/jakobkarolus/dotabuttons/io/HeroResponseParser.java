@@ -258,6 +258,8 @@ public class HeroResponseParser {
                 currentList.add(r);
             }
         }
+        if(!currentList.isEmpty())
+            map.put(currentHero, new Vector<HeroResponse>(currentList));
         return map;
     }
 
