@@ -11,3 +11,9 @@
 Checkout repo and import into Android Studio (uses gradle build system).
 
 https://github.com/jkarolus/dotabuttons provides an eclipse version, which is currently not in active development though.
+
+<b>Changelog</b>
+
+Version 1.3:
+- New Layout: ExpandleListView and ViewPager
+- New responses for Dota 2 Reporter
