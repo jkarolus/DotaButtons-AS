@@ -13,9 +13,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import java.io.File;
@@ -23,31 +26,38 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import de.jakobkarolus.dotabuttons.DotaButtons;
 import de.jakobkarolus.dotabuttons.R;
+import de.jakobkarolus.dotabuttons.io.DotaButtonsDbCallback;
 import de.jakobkarolus.dotabuttons.io.HeroResponseParser;
+import de.jakobkarolus.dotabuttons.io.SQLAdapter;
 import de.jakobkarolus.dotabuttons.layout.CustomListAdapter;
 import de.jakobkarolus.dotabuttons.model.HeroResponse;
+import de.jakobkarolus.dotabuttons.model.Heroes;
 import de.jakobkarolus.dotabuttons.view.SlidingTabLayout;
 
 /**
  * Created by Jakob on 22.02.2015.
  */
-public class ListFragment extends Fragment{
+public class ListFragment extends Fragment implements DotaButtonsDbCallback{
+
+    public static final String DOTA_2 = "Dota 2";
+    public static final String DOTA_2_REPORTER = "Reporter";
+    public static final String FAVS = "Favorites";
 
     private static final String TAG = "DB_ListFragment";
-
-    private SlidingTabLayout mSlidingTabLayout;
-    private ViewPager mViewPager;
 
     List<CustomListAdapter> adapters;
 
     private boolean sendAudio;
 
     private MediaPlayer player;
+    private SQLAdapter mSqlAdapter;
 
     public ListFragment(){}
 
@@ -71,10 +81,10 @@ public class ListFragment extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new CustomPagerAdapter());
-
-        mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);
+        ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        PagerAdapter mAdapter = new CustomPagerAdapter();
+        mViewPager.setAdapter(mAdapter);
+        SlidingTabLayout mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setViewPager(mViewPager);
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -113,8 +123,12 @@ public class ListFragment extends Fragment{
         adapters = new Vector<>();
 
         //load entries and associate with adapters
-        adapters.add(new CustomListAdapter(HeroResponseParser.loadReporterResponseData(), getActivity(), "Reporter", Color.BLUE));
-        adapters.add(new CustomListAdapter(HeroResponseParser.loadDotaHeroResponseData(), getActivity(), "Dota 2", Color.RED));
+        adapters.add(new CustomListAdapter(HeroResponseParser.loadDotaHeroResponseData(), getActivity(), DOTA_2, Color.RED));
+        adapters.add(new CustomListAdapter(HeroResponseParser.loadReporterResponseData(), getActivity(), DOTA_2_REPORTER, Color.BLUE));
+        mSqlAdapter = new SQLAdapter(getActivity(), this);
+        adapters.add(new CustomListAdapter(Collections.EMPTY_MAP, getActivity(), FAVS, Color.GREEN));
+        mSqlAdapter.getFavorites();
+
     }
 
     private void playback(HeroResponse entry) {
@@ -136,13 +150,7 @@ public class ListFragment extends Fragment{
                 afd.close();
                 player.prepareAsync();
 
-            } catch (IOException ex) {
-                Log.d(TAG, "create failed:", ex);
-                // fall through
-            } catch (IllegalArgumentException ex) {
-                Log.d(TAG, "create failed:", ex);
-                // fall through
-            } catch (SecurityException ex) {
+            } catch (IOException | IllegalArgumentException | SecurityException ex) {
                 Log.d(TAG, "create failed:", ex);
                 // fall through
             }
@@ -199,6 +207,28 @@ public class ListFragment extends Fragment{
         player.reset();
     }
 
+    @Override
+    public void onAddHeroResponseError(HeroResponse response) {
+        Toast.makeText(getActivity(), "Error on adding Hero to Favs: " + response.getHero().getNameForHero() + "; " + response.getResponse(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRemoveHeroResponseError(HeroResponse response) {
+        Toast.makeText(getActivity(), "Error on removing Hero from Favs: " + response.getHero().getNameForHero() + "; " + response.getResponse(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRetrieveFavorites(final Map<Heroes, List<HeroResponse>> responses) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapters.get(2).updateDataset(responses);
+                adapters.get(2).notifyDataSetChanged();
+            }
+        });
+
+    }
     private class CustomPagerAdapter extends PagerAdapter{
 
 
@@ -222,8 +252,9 @@ public class ListFragment extends Fragment{
             container.removeView((View) object);
         }
 
+
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
             View view = getActivity().getLayoutInflater().inflate(R.layout.dota_buttons_pager_item, container, false);
             container.addView(view);
 
@@ -237,8 +268,59 @@ public class ListFragment extends Fragment{
                     return true;
                 }
             });
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int p, long id) {
+                    int itemType = ExpandableListView.getPackedPositionType(id);
 
+                    if ( itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                        int childPosition = ExpandableListView.getPackedPositionChild(id);
+                        int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+
+                        ExpandableListView eV = (ExpandableListView) parent;
+                        HeroResponse response = (HeroResponse) eV.getExpandableListAdapter().getChild(groupPosition, childPosition);
+
+                        if(position == 2)
+                            showFavEntryMenu(view, response);
+                        else
+                            showListEntryMenu(view, response);
+                        return true;
+                    } else {
+                        return true;
+                    }
+                }
+            });
             return view;
         }
+    }
+
+    private void showFavEntryMenu(View view, final HeroResponse response) {
+        PopupMenu popup = new PopupMenu(getActivity(), view);
+        popup.getMenuInflater().inflate(R.menu.fav_entry_context_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                //only one
+                mSqlAdapter.removeHeroResponseFromDB(response);
+                mSqlAdapter.getFavorites();
+                return true;
+            }
+        });
+        popup.show();
+    }
+
+    private void showListEntryMenu(View view, final HeroResponse response) {
+        PopupMenu popup = new PopupMenu(getActivity(), view);
+        popup.getMenuInflater().inflate(R.menu.list_entry_context_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                //only one
+                mSqlAdapter.addHeroResponseToDB(response);
+                mSqlAdapter.getFavorites();
+                return true;
+            }
+        });
+        popup.show();
     }
 }

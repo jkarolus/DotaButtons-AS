@@ -12,6 +12,7 @@ public class HeroResponse {
 	private String response;
 	private Heroes heroName;
 	private int soundFile;
+    private long id;
 	
 	private boolean newVersion;
 	
@@ -24,22 +25,25 @@ public class HeroResponse {
 		this.newVersion = newVersion;
 	}
 
-	public HeroResponse(String response, Heroes heroName, int soundFile) {
+	public HeroResponse(long id, String response, Heroes heroName, int soundFile) {
 		super();
+        this.id = id;
 		this.response = response;
 		this.heroName = heroName;
 		this.setSoundFile(soundFile);
 		this.newVersion = false;
 	}
 	
-	public HeroResponse(String response, Heroes heroName, int soundFile, boolean newVersion) {
+	public HeroResponse(long id, String response, Heroes heroName, int soundFile, boolean newVersion) {
 		super();
+        this.id = id;
 		this.response = response;
 		this.heroName = heroName;
 		this.setSoundFile(soundFile);
 		this.newVersion = newVersion;
 	}
 
+    public long getId() {return id;}
 
 	public String getResponse() {
 		return response;

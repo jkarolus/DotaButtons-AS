@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
-import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,16 +13,13 @@ import android.view.MenuItem;
 import de.jakobkarolus.dotabuttons.fragments.ListFragment;
 
 /**
- * custom {@link ListActivity} that provides access to our hero responses
- * 
+ *
  * @author Jakob
  *
  */
 public class DotaButtons extends Activity{
 	
 	private static final String TAG = DotaButtons.class.getName();
-	public static final String DOTA_2 = "Dota 2";
-	public static final String DOTA_2_REPORTER = "Reporter";
     public static final String SEND_AUDIO = "sendAudio";
 
 
@@ -77,7 +73,7 @@ public class DotaButtons extends Activity{
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle("DotaButtons");
-			builder.setMessage("By: Jakob Karolus\nVersion 1.3.1");
+			builder.setMessage("By: Jakob Karolus\nVersion 1.4");
 			builder.setNegativeButton(R.string.back,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {

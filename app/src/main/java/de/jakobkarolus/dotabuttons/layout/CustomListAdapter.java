@@ -43,6 +43,15 @@ public class CustomListAdapter extends BaseExpandableListAdapter{
         this.indicatorColor = indicatorColor;
     }
 
+    public void updateDataset(Map<Heroes, List<HeroResponse>> responses){
+        this.responses = new Vector<>();
+        this.heroes = new Vector<>();
+        for(Heroes h : responses.keySet()){
+            this.heroes.add(h);
+            this.responses.add(responses.get(h));
+        }
+    }
+
     public String getTitle(int position){
         return this.title;
     }
