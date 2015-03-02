@@ -220,15 +220,29 @@ public class HeroResponseParser {
         entries.add(new HeroResponse(id++, "Delaying the inevitable", ENIGMA, R.raw.enigma_delaying_inevitable, false));
 
         //Version 1.3
+        newVersion = false;
+        entries.add(new HeroResponse(id++, "Noooo", TIDEHUNTER, R.raw.tide_noo, newVersion));
+        entries.add(new HeroResponse(id++, "Mask on my mask", JUGGERNAUT, R.raw.jugg_mask_on_mask, newVersion));
+        entries.add(new HeroResponse(id++, "Smack em", ENIGMA, R.raw.enigma_smack_em, newVersion));
+        entries.add(new HeroResponse(id++, "Commended for Leadership", TIMBERSAW, R.raw.timber_commended, newVersion));
+        entries.add(new HeroResponse(id++, "Your life is now validated", TIMBERSAW, R.raw.timber_life_validated, newVersion));
+        entries.add(new HeroResponse(id++, "Commended for being forgiving", KUNKKA, R.raw.kunkka_forgiving, newVersion));
+        entries.add(new HeroResponse(id++, "I liked the part where you pressed R", JUGGERNAUT, R.raw.jugger_part_pressed_r, newVersion));
+        entries.add(new HeroResponse(id++, "Seeking commendations", KUNKKA, R.raw.kunkka_commendations, newVersion));
+
+        //Version 1.4
         newVersion = true;
-        entries.add(new HeroResponse(id++, "Noooo", TIDEHUNTER, R.raw.tide_noo, true));
-        entries.add(new HeroResponse(id++, "Mask on my mask", JUGGERNAUT, R.raw.jugg_mask_on_mask, true));
-        entries.add(new HeroResponse(id++, "Smack em", ENIGMA, R.raw.enigma_smack_em, true));
-        entries.add(new HeroResponse(id++, "Commended for Leadership", TIMBERSAW, R.raw.timber_commended, true));
-        entries.add(new HeroResponse(id++, "Your life is now validated", TIMBERSAW, R.raw.timber_life_validated, true));
-        entries.add(new HeroResponse(id++, "Commended for being forgiving", KUNKKA, R.raw.kunkka_forgiving, true));
-        entries.add(new HeroResponse(id++, "I liked the part where you pressed R", JUGGERNAUT, R.raw.jugger_part_pressed_r, true));
-        entries.add(new HeroResponse(id++, "Seeking commendations", KUNKKA, R.raw.kunkka_commendations, true));
+        entries.add(new HeroResponse(id++, "I forgot he had that ability", TIMBERSAW, R.raw.timber_forgot_ability, newVersion));
+        entries.add(new HeroResponse(id++, "You should be nicer to people", TIMBERSAW, R.raw.timber_nevaaa, newVersion));
+        entries.add(new HeroResponse(id++, "Backdoor protection system", TIMBERSAW, R.raw.timber_backdoor_protection, newVersion));
+        entries.add(new HeroResponse(id++, "Oh boy", TIMBERSAW, R.raw.timber_oh_boy, newVersion));
+        entries.add(new HeroResponse(id++, "Hi doggy", ENIGMA, R.raw.enigma_hi_doggy, newVersion));
+        entries.add(new HeroResponse(id++, "Cosmetics", ENIGMA, R.raw.enigma_cosmetics, newVersion));
+        entries.add(new HeroResponse(id++, "It's about 30 dollars", REPORTER, R.raw.reporter_30_dollars, newVersion));
+        entries.add(new HeroResponse(id++, "Don't do business with the enemy!", TIMBERSAW, R.raw.timber_traitor, newVersion));
+        entries.add(new HeroResponse(id++, "Uhh snazzy!", TERRORBLADE, R.raw.terrorblade_snazzy, newVersion));
+        entries.add(new HeroResponse(id++, "Zeus, use your ultimate", ENIGMA, R.raw.enigma_zeus_utli, newVersion));
+
 
 		return toMap(entries);
 		

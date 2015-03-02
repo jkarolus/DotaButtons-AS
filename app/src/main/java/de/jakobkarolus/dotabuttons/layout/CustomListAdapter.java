@@ -115,9 +115,20 @@ public class CustomListAdapter extends BaseExpandableListAdapter{
         t.setText(hero.getNameForHero());
         i.setImageResource(hero.getImageForHero());
 
-        convertView.setBackgroundColor(Color.argb(255, 250, 250, 250));
+        if(hasNewResponse(groupPosition))
+            convertView.setBackgroundColor(Color.argb(50, 255, 153, 0));
+        else
+            convertView.setBackgroundColor(Color.argb(255, 250, 250, 250));
 
         return convertView;
+    }
+
+    private boolean hasNewResponse(int groupPosition) {
+        for(HeroResponse r : responses.get(groupPosition)){
+            if(r.isNewVersion())
+                return true;
+        }
+        return false;
     }
 
     @Override
