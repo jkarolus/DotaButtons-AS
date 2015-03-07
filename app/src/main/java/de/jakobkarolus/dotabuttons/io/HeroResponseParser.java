@@ -242,6 +242,7 @@ public class HeroResponseParser {
         entries.add(new HeroResponse(id++, "Don't do business with the enemy!", TIMBERSAW, R.raw.timber_traitor, newVersion));
         entries.add(new HeroResponse(id++, "Uhh snazzy!", TERRORBLADE, R.raw.terrorblade_snazzy, newVersion));
         entries.add(new HeroResponse(id++, "Zeus, use your ultimate", ENIGMA, R.raw.enigma_zeus_utli, newVersion));
+        entries.add(new HeroResponse(id++, "Nevaaa!", TIMBERSAW, R.raw.timber_nevaaa_2, newVersion));
 
 
 		return toMap(entries);
