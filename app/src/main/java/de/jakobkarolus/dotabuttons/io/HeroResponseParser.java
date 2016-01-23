@@ -37,6 +37,7 @@ import static de.jakobkarolus.dotabuttons.model.Heroes.KEEPER_OF_THE_LIGHT;
 import static de.jakobkarolus.dotabuttons.model.Heroes.KUNKKA;
 import static de.jakobkarolus.dotabuttons.model.Heroes.LEGION_COMMANDER;
 import static de.jakobkarolus.dotabuttons.model.Heroes.LINA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.LION;
 import static de.jakobkarolus.dotabuttons.model.Heroes.LUNA;
 import static de.jakobkarolus.dotabuttons.model.Heroes.MAGNUS;
 import static de.jakobkarolus.dotabuttons.model.Heroes.MEEPO;
@@ -231,7 +232,7 @@ public class HeroResponseParser {
         entries.add(new HeroResponse(id++, "Seeking commendations", KUNKKA, R.raw.kunkka_commendations, newVersion));
 
         //Version 1.4
-        newVersion = true;
+        newVersion = false;
         entries.add(new HeroResponse(id++, "I forgot he had that ability", TIMBERSAW, R.raw.timber_forgot_ability, newVersion));
         entries.add(new HeroResponse(id++, "You should be nicer to people", TIMBERSAW, R.raw.timber_nevaaa, newVersion));
         entries.add(new HeroResponse(id++, "Backdoor protection system", TIMBERSAW, R.raw.timber_backdoor_protection, newVersion));
@@ -243,6 +244,69 @@ public class HeroResponseParser {
         entries.add(new HeroResponse(id++, "Uhh snazzy!", TERRORBLADE, R.raw.terrorblade_snazzy, newVersion));
         entries.add(new HeroResponse(id++, "Zeus, use your ultimate", ENIGMA, R.raw.enigma_zeus_utli, newVersion));
         entries.add(new HeroResponse(id++, "Nevaaa!", TIMBERSAW, R.raw.timber_nevaaa_2, newVersion));
+
+		//Version 1.5
+		newVersion = true;
+		entries.add(new HeroResponse(id++, "He had many scepters", TIMBERSAW, R.raw.timb_scepter, newVersion));
+		entries.add(new HeroResponse(id++, "Didnt realize I was alive", TIDEHUNTER, R.raw.tide_alive, newVersion));
+		entries.add(new HeroResponse(id++, "Refresher", ENIGMA, R.raw.engima_refresher, newVersion));
+		entries.add(new HeroResponse(id++, "Still have the aegis", JUGGERNAUT, R.raw.jugger_aegis, newVersion));
+		entries.add(new HeroResponse(id++, "Get home quickly", TIMBERSAW, R.raw.timber_home_quickly, newVersion));
+		entries.add(new HeroResponse(id++, "Nooo!", RUBICK, R.raw.rubick_nooo, newVersion));
+		entries.add(new HeroResponse(id++, "Autoattack", RUBICK, R.raw.rubick_autoattack, newVersion));
+		entries.add(new HeroResponse(id++, "Gank squad", REPORTER, R.raw.reporter_gank_squad, newVersion));
+		entries.add(new HeroResponse(id++, "Farming creeps", RUBICK, R.raw.rubick_farming_creeps, newVersion));
+		entries.add(new HeroResponse(id++, "Aghanims was my father", RUBICK, R.raw.rubick_lore, newVersion));
+		entries.add(new HeroResponse(id++, "Nerd", CREEP, R.raw.creep_nerd, newVersion));
+		entries.add(new HeroResponse(id++, "Do the thing", ENIGMA, R.raw.enigma_do_the_thing, newVersion));
+		entries.add(new HeroResponse(id++, "Yeah", TIDEHUNTER, R.raw.tide_yeah, newVersion));
+		entries.add(new HeroResponse(id++, "That was for my effigy", KUNKKA, R.raw.kunkka_effigy, newVersion));
+		entries.add(new HeroResponse(id++, "Quote your KDA", KUNKKA, R.raw.kunkka_kda, newVersion));
+		entries.add(new HeroResponse(id++, "Black hole bluff", ENIGMA, R.raw.enigma_black_hole_bluff, newVersion));
+		entries.add(new HeroResponse(id++, "So close", KUNKKA, R.raw.kunkka_so_close, newVersion));
+		entries.add(new HeroResponse(id++, "He does it!", TERRORBLADE, R.raw.terrorblade_win_international, newVersion));
+		entries.add(new HeroResponse(id++, "Hi, I am Gyrocopter", GYROCOPTER, R.raw.gyro_gyrocopter, newVersion));
+		entries.add(new HeroResponse(id++, "In the bag", LION, R.raw.lion_bag, newVersion));
+		entries.add(new HeroResponse(id++, "In the bag", RUBICK, R.raw.rubick_bag, newVersion));
+		entries.add(new HeroResponse(id++, "You're fugly as all hell", GYROCOPTER, R.raw.gyro_lion_ugly, newVersion));
+		entries.add(new HeroResponse(id++, "Damn", GYROCOPTER, R.raw.gyro_damn, newVersion));
+		entries.add(new HeroResponse(id++, "I'm in the bag", GYROCOPTER, R.raw.gyro_bag, newVersion));
+		entries.add(new HeroResponse(id++, "In the bag", SKYWRATH_MAGE, R.raw.sky_bag, newVersion));
+		entries.add(new HeroResponse(id++, "Not playing with you again", INVOKER, R.raw.invoker_not_playing, newVersion));
+		entries.add(new HeroResponse(id++, "Let's go", CREEP, R.raw.creep_lets_go, newVersion));
+		entries.add(new HeroResponse(id++, "Commander Tresdin reporting", LEGION_COMMANDER, R.raw.legion_reporting, newVersion));
+		entries.add(new HeroResponse(id++, "Let's lionize these wimps", LION, R.raw.lion_lionize, newVersion));
+		entries.add(new HeroResponse(id++, "Annoying fuckers", GYROCOPTER, R.raw.gyro_annoying_fuckers, newVersion));
+		entries.add(new HeroResponse(id++, "The other ward", RUBICK, R.raw.rubick_other_ward, newVersion));
+		entries.add(new HeroResponse(id++, "Jupada", GYROCOPTER, R.raw.gyro_wupada, newVersion));
+		entries.add(new HeroResponse(id++, "That means yes", TECHIES, R.raw.techies_means_yes, newVersion));
+		entries.add(new HeroResponse(id++, "Landmines", RUBICK, R.raw.rubick_landmines, newVersion));
+		entries.add(new HeroResponse(id++, "Enigma in the fountain", ENIGMA, R.raw.engima_fountain, newVersion));
+		entries.add(new HeroResponse(id++, "It's a piggy!", TECHIES, R.raw.techies_piggy, newVersion));
+		entries.add(new HeroResponse(id++, "Place the sentry ward", LION, R.raw.lion_sentry, newVersion));
+		entries.add(new HeroResponse(id++, "Flying courier", SHOPKEEPER, R.raw.shopkeeper_courier, newVersion));
+		entries.add(new HeroResponse(id++, "It makes a lot of sense", REPORTER, R.raw.reporter_dota_sense, newVersion));
+		entries.add(new HeroResponse(id++, "Techies", ENIGMA, R.raw.enigma_techies, newVersion));
+		entries.add(new HeroResponse(id++, "Pinging", RUBICK, R.raw.rubick_pingin, newVersion));
+		entries.add(new HeroResponse(id++, "Finally reach level 2", ENIGMA, R.raw.enigma_level_2, newVersion));
+		entries.add(new HeroResponse(id++, "Maybe I am, maybe I am not", GYROCOPTER, R.raw.gyro_maybe, newVersion));
+		entries.add(new HeroResponse(id++, "Welcome to the secret shop", SHOPKEEPER, R.raw.shopkeeper_dick, newVersion));
+		entries.add(new HeroResponse(id++, "Time to fucking duel", LEGION_COMMANDER, R.raw.legion_time_to_duel, newVersion));
+		entries.add(new HeroResponse(id++, "Rocks, gimmie a lift", LEGION_COMMANDER, R.raw.legion_rocks_lift, newVersion));
+		entries.add(new HeroResponse(id++, "You face Tresdin! Commander of the legion!", LEGION_COMMANDER, R.raw.legion_duel, newVersion));
+		entries.add(new HeroResponse(id++, "What does it say?", TECHIES, R.raw.techies_nerf, newVersion));
+		entries.add(new HeroResponse(id++, "Commended for teaching", GYROCOPTER, R.raw.gyro_commend_teaching, newVersion));
+		entries.add(new HeroResponse(id++, "Careful is my middle name", ENIGMA, R.raw.enigma_careful, newVersion));
+		entries.add(new HeroResponse(id++, "I felt like spending mana", LION, R.raw.lion_spending_mana, newVersion));
+		entries.add(new HeroResponse(id++, "Sucking that guy", LION, R.raw.lion_enough_mana, newVersion));
+		entries.add(new HeroResponse(id++, "Finger online", LION, R.raw.lion_finger_online, newVersion));
+		entries.add(new HeroResponse(id++, "Tower! Duel me!", LEGION_COMMANDER, R.raw.legion_duel_ready, newVersion));
+		entries.add(new HeroResponse(id++, "You face Tresdin! Commander of ...", LEGION_COMMANDER, R.raw.legion_face_tresdin, newVersion));
+		entries.add(new HeroResponse(id++, "Finger of death", RUBICK, R.raw.rubick_finger, newVersion));
+		entries.add(new HeroResponse(id++, "Muhaha! Finger!", LION, R.raw.lion_finger, newVersion));
+		entries.add(new HeroResponse(id++, "Only 6.86 changes?", ENIGMA, R.raw.enigma_686changes, newVersion));
+		entries.add(new HeroResponse(id++, "I got the dragon lance", GYROCOPTER, R.raw.gyro_dragonlance, newVersion));
+		entries.add(new HeroResponse(id++, "I don't even have a spell at level 1", INVOKER, R.raw.invoker_spell_level_one, newVersion));
 
 
 		return toMap(entries);
