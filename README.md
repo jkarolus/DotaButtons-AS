@@ -15,6 +15,9 @@ https://github.com/jkarolus/dotabuttons provides an eclipse version, which is cu
 <b>Changelog</b>
 
 Version 1.4:
+- New reponses for Dota 2 Reporter (until Episode 67)
+
+Version 1.4:
 - Favorites: You can add responses to your own favorites list
 - New Version highlighting for groups
 - New reponses for Dota 2 Reporter

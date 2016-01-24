@@ -6,9 +6,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import de.jakobkarolus.dotabuttons.fragments.ListFragment;
 
@@ -71,9 +74,12 @@ public class DotaButtons extends Activity{
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+			MediaPlayer player = MediaPlayer.create(getActivity(), R.raw.sven_thanks_01);
+			player.start();
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle("DotaButtons");
-			builder.setMessage("By: Jakob Karolus\nVersion 1.4");
+			builder.setMessage("By: Jakob Karolus\nVersion 1.5");
 			builder.setNegativeButton(R.string.back,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
