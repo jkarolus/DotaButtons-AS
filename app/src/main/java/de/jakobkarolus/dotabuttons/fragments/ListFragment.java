@@ -48,6 +48,7 @@ public class ListFragment extends Fragment implements DotaButtonsDbCallback{
 
     public static final String DOTA_2 = "Dota 2";
     public static final String DOTA_2_REPORTER = "Reporter";
+    public static final String DOTA_2_PERSONALITIES = "Personalities";
     public static final String FAVS = "Favorites";
 
     private static final String TAG = "DB_ListFragment";
@@ -125,6 +126,7 @@ public class ListFragment extends Fragment implements DotaButtonsDbCallback{
         //load entries and associate with adapters
         adapters.add(new CustomListAdapter(HeroResponseParser.loadDotaHeroResponseData(), getActivity(), DOTA_2, Color.RED));
         adapters.add(new CustomListAdapter(HeroResponseParser.loadReporterResponseData(), getActivity(), DOTA_2_REPORTER, Color.BLUE));
+        adapters.add(new CustomListAdapter(HeroResponseParser.loadPersonalitiesData(), getActivity(), DOTA_2_PERSONALITIES, Color.YELLOW));
         mSqlAdapter = new SQLAdapter(getActivity(), this);
         adapters.add(new CustomListAdapter(Collections.EMPTY_MAP, getActivity(), FAVS, Color.GREEN));
         mSqlAdapter.getFavorites();

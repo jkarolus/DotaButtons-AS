@@ -27,6 +27,7 @@ import static de.jakobkarolus.dotabuttons.model.Heroes.CRYSTAL_MAIDEN;
 import static de.jakobkarolus.dotabuttons.model.Heroes.DARK_SEER;
 import static de.jakobkarolus.dotabuttons.model.Heroes.DAZZLE;
 import static de.jakobkarolus.dotabuttons.model.Heroes.EARTHSHAKER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.EARTH_SPIRIT;
 import static de.jakobkarolus.dotabuttons.model.Heroes.ENIGMA;
 import static de.jakobkarolus.dotabuttons.model.Heroes.FACELESS_VOID;
 import static de.jakobkarolus.dotabuttons.model.Heroes.GLADOS;
@@ -307,6 +308,15 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse(id++, "Only 6.86 changes?", ENIGMA, R.raw.enigma_686changes, newVersion));
 		entries.add(new HeroResponse(id++, "I got the dragon lance", GYROCOPTER, R.raw.gyro_dragonlance, newVersion));
 		entries.add(new HeroResponse(id++, "I don't even have a spell at level 1", INVOKER, R.raw.invoker_spell_level_one, newVersion));
+
+		//TODO
+		entries.add(new HeroResponse(id++, "NEEEIN! Fick dein Müdda!", EARTH_SPIRIT, R.raw.sing_fick_dein_muedda));
+		entries.add(new HeroResponse(id++, "Surprise! NEEEEIIN!", EARTH_SPIRIT, R.raw.sing_surprise_nein));
+		entries.add(new HeroResponse(id++, "Bitches and hoes", EARTH_SPIRIT, R.raw.sing_bitches_and_hoes));
+
+		entries.add(new HeroResponse(id++, "Waaaaah! Waaaaaaah!", EARTH_SPIRIT, R.raw.bulldog_scream));
+		entries.add(new HeroResponse(id++, "Hahaha!", EARTH_SPIRIT, R.raw.bulldog_laughter1));
+		entries.add(new HeroResponse(id++, "Hihihi!", EARTH_SPIRIT, R.raw.bulldog_laughter2));
 
 
 		return toMap(entries);
@@ -624,4 +634,8 @@ public class HeroResponseParser {
 
 	}
 
+	public static Map<Heroes, List<HeroResponse>> loadPersonalitiesData() {
+		List<HeroResponse> entries = new Vector<HeroResponse>();
+		return toMap(entries);
+	}
 }
