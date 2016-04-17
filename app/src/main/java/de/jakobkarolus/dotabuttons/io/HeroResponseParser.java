@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import de.jakobkarolus.dotabuttons.R;
+import de.jakobkarolus.dotabuttons.model.DotaButtonsCategory;
 import de.jakobkarolus.dotabuttons.model.HeroResponse;
 import de.jakobkarolus.dotabuttons.model.Heroes;
 
@@ -21,6 +22,7 @@ import static de.jakobkarolus.dotabuttons.model.Heroes.BATRIDER;
 import static de.jakobkarolus.dotabuttons.model.Heroes.BOUNTY_HUNTER;
 import static de.jakobkarolus.dotabuttons.model.Heroes.BREWMASTER;
 import static de.jakobkarolus.dotabuttons.model.Heroes.BRISTLEBACK;
+import static de.jakobkarolus.dotabuttons.model.Heroes.BULLDOG;
 import static de.jakobkarolus.dotabuttons.model.Heroes.CLOCKWERK;
 import static de.jakobkarolus.dotabuttons.model.Heroes.CREEP;
 import static de.jakobkarolus.dotabuttons.model.Heroes.CRYSTAL_MAIDEN;
@@ -43,6 +45,7 @@ import static de.jakobkarolus.dotabuttons.model.Heroes.LUNA;
 import static de.jakobkarolus.dotabuttons.model.Heroes.MAGNUS;
 import static de.jakobkarolus.dotabuttons.model.Heroes.MEEPO;
 import static de.jakobkarolus.dotabuttons.model.Heroes.MIRANA;
+import static de.jakobkarolus.dotabuttons.model.Heroes.MISC;
 import static de.jakobkarolus.dotabuttons.model.Heroes.NATURES_PROPHET;
 import static de.jakobkarolus.dotabuttons.model.Heroes.NECROPHOS;
 import static de.jakobkarolus.dotabuttons.model.Heroes.NIGHT_STALKER;
@@ -57,6 +60,7 @@ import static de.jakobkarolus.dotabuttons.model.Heroes.RUBICK;
 import static de.jakobkarolus.dotabuttons.model.Heroes.SHADOW_FIEND;
 import static de.jakobkarolus.dotabuttons.model.Heroes.SHADOW_SHAMAN;
 import static de.jakobkarolus.dotabuttons.model.Heroes.SHOPKEEPER;
+import static de.jakobkarolus.dotabuttons.model.Heroes.SINGSING;
 import static de.jakobkarolus.dotabuttons.model.Heroes.SKYWRATH_MAGE;
 import static de.jakobkarolus.dotabuttons.model.Heroes.SLARDAR;
 import static de.jakobkarolus.dotabuttons.model.Heroes.SLARK;
@@ -88,14 +92,15 @@ public class HeroResponseParser {
 	/**
 	 * loads hero responses of Dota 2 Reporter(hard-coded)<br>
      * Map is per hero, list per response
-	 * 
+	 *
+	 * @param startId startId in the database for this category
 	 * @return {@link java.util.Map} of {@link List} of {@link HeroResponse} sorted alphabetically
 	 */
-	public static Map<Heroes, List<HeroResponse>> loadReporterResponseData(){
+	public static DotaButtonsCategory loadReporterResponseData(long startId){
 
         List<HeroResponse> entries = new Vector<>();
 
-        long id=300;
+        long id=startId;
         entries.add(new HeroResponse(id++, "I don't like magic", ANTIMAGE, R.raw.anti_mage_dont_like_magic));
         entries.add(new HeroResponse(id++, "Is this your card", ANTIMAGE, R.raw.anti_mage_is_this_your_card));
         entries.add(new HeroResponse(id++, "Cleanup time!", ANTIMAGE, R.raw.anti_mage_cleanup_time));
@@ -309,17 +314,8 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse(id++, "I got the dragon lance", GYROCOPTER, R.raw.gyro_dragonlance, newVersion));
 		entries.add(new HeroResponse(id++, "I don't even have a spell at level 1", INVOKER, R.raw.invoker_spell_level_one, newVersion));
 
-		//TODO
-		entries.add(new HeroResponse(id++, "NEEEIN! Fick dein Müdda!", EARTH_SPIRIT, R.raw.sing_fick_dein_muedda));
-		entries.add(new HeroResponse(id++, "Surprise! NEEEEIIN!", EARTH_SPIRIT, R.raw.sing_surprise_nein));
-		entries.add(new HeroResponse(id++, "Bitches and hoes", EARTH_SPIRIT, R.raw.sing_bitches_and_hoes));
 
-		entries.add(new HeroResponse(id++, "Waaaaah! Waaaaaaah!", EARTH_SPIRIT, R.raw.bulldog_scream));
-		entries.add(new HeroResponse(id++, "Hahaha!", EARTH_SPIRIT, R.raw.bulldog_laughter1));
-		entries.add(new HeroResponse(id++, "Hihihi!", EARTH_SPIRIT, R.raw.bulldog_laughter2));
-
-
-		return toMap(entries);
+		return new DotaButtonsCategory(entries.size(), toMap(entries));
 		
 	}
 
@@ -375,14 +371,15 @@ public class HeroResponseParser {
     /**
 	 * loads hero responses of Dota 2 (hard-coded)
      * map is per hero, list per response
-	 * 
+	 *
+	 * @param startId startId in the database for this category
 	 * @return {@ling Map} of {@link List} of {@link HeroResponse} sorted alphabetically
 	 */
-	public static Map<Heroes, List<HeroResponse>>  loadDotaHeroResponseData() {
+	public static DotaButtonsCategory loadDotaHeroResponseData(long startId) {
 		
-		List<HeroResponse> entries = new Vector<HeroResponse>(); 
+		List<HeroResponse> entries = new Vector<HeroResponse>();
 
-        long id=0;
+        long id=startId;
 		entries.add(new HeroResponse(id++, "You can keep your magic", TINKER, R.raw.tink_ability_laser_01));
 		entries.add(new HeroResponse(id++, "Magic is an abomination", ANTIMAGE, R.raw.anti_magicuser_01));
 		entries.add(new HeroResponse(id++, "Lord of Avernus", ABADDON, R.raw.abad_spawn_02));
@@ -630,12 +627,32 @@ public class HeroResponseParser {
 		entries.add(new HeroResponse(id++, "What you're doing is wrong", GLADOS, R.raw.glados_killing_spree_ann_glados_kill_holy_03));
 		entries.add(new HeroResponse(id++, "Great teamwork", GLADOS, R.raw.glados_killing_spree_ann_glados_kill_ownage_01));
 		
-		return toMap(entries);
+		return new DotaButtonsCategory(entries.size(), toMap(entries));
 
 	}
 
-	public static Map<Heroes, List<HeroResponse>> loadPersonalitiesData() {
+	/**
+	 * loads personalities responses (hard-coded)
+	 * map is per personality, list per response
+	 *
+	 * @param startId startId in the database for this category
+	 * @return {@ling Map} of {@link List} of {@link HeroResponse} sorted alphabetically
+	 */
+	public static DotaButtonsCategory loadPersonalitiesData(long startId) {
 		List<HeroResponse> entries = new Vector<HeroResponse>();
-		return toMap(entries);
+
+		long id = startId;
+
+		entries.add(new HeroResponse(id++, "NEEEIN! Fick dein Müdda!", SINGSING, R.raw.sing_fick_dein_muedda));
+		entries.add(new HeroResponse(id++, "Surprise! NEEEEIIN!", SINGSING, R.raw.sing_surprise_nein));
+		entries.add(new HeroResponse(id++, "Bitches and hoes", SINGSING, R.raw.sing_bitches_and_hoes));
+
+		entries.add(new HeroResponse(id++, "Waaaaah! Waaaaaaah!", BULLDOG, R.raw.bulldog_scream));
+		entries.add(new HeroResponse(id++, "Hahaha!", BULLDOG, R.raw.bulldog_laughter1));
+		entries.add(new HeroResponse(id++, "Hihihi!", BULLDOG, R.raw.bulldog_laughter2));
+
+		entries.add(new HeroResponse(id++, "Chivalry Laughter", MISC, R.raw.chivalry_laughter));
+
+		return new DotaButtonsCategory(entries.size(), toMap(entries));
 	}
 }

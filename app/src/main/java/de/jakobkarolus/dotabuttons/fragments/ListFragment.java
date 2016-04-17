@@ -37,6 +37,7 @@ import de.jakobkarolus.dotabuttons.io.DotaButtonsDbCallback;
 import de.jakobkarolus.dotabuttons.io.HeroResponseParser;
 import de.jakobkarolus.dotabuttons.io.SQLAdapter;
 import de.jakobkarolus.dotabuttons.layout.CustomListAdapter;
+import de.jakobkarolus.dotabuttons.model.DotaButtonsCategory;
 import de.jakobkarolus.dotabuttons.model.HeroResponse;
 import de.jakobkarolus.dotabuttons.model.Heroes;
 import de.jakobkarolus.dotabuttons.view.SlidingTabLayout;
@@ -124,9 +125,13 @@ public class ListFragment extends Fragment implements DotaButtonsDbCallback{
         adapters = new Vector<>();
 
         //load entries and associate with adapters
-        adapters.add(new CustomListAdapter(HeroResponseParser.loadDotaHeroResponseData(), getActivity(), DOTA_2, Color.RED));
-        adapters.add(new CustomListAdapter(HeroResponseParser.loadReporterResponseData(), getActivity(), DOTA_2_REPORTER, Color.BLUE));
-        adapters.add(new CustomListAdapter(HeroResponseParser.loadPersonalitiesData(), getActivity(), DOTA_2_PERSONALITIES, Color.YELLOW));
+        DotaButtonsCategory dotaResponses = HeroResponseParser.loadDotaHeroResponseData(0);
+        DotaButtonsCategory reporterResponses = HeroResponseParser.loadReporterResponseData(dotaResponses.getCount());
+        DotaButtonsCategory personalitiesResponses = HeroResponseParser.loadPersonalitiesData(reporterResponses.getCount());
+
+        adapters.add(new CustomListAdapter(dotaResponses.getResponses(), getActivity(), DOTA_2, Color.RED));
+        adapters.add(new CustomListAdapter(reporterResponses.getResponses(), getActivity(), DOTA_2_REPORTER, Color.BLUE));
+        adapters.add(new CustomListAdapter(personalitiesResponses.getResponses(), getActivity(), DOTA_2_PERSONALITIES, Color.YELLOW));
         mSqlAdapter = new SQLAdapter(getActivity(), this);
         adapters.add(new CustomListAdapter(Collections.EMPTY_MAP, getActivity(), FAVS, Color.GREEN));
         mSqlAdapter.getFavorites();
@@ -225,8 +230,8 @@ public class ListFragment extends Fragment implements DotaButtonsDbCallback{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adapters.get(2).updateDataset(responses);
-                adapters.get(2).notifyDataSetChanged();
+                adapters.get(adapters.size()-1).updateDataset(responses);
+                adapters.get(adapters.size()-1).notifyDataSetChanged();
             }
         });
 
@@ -282,7 +287,7 @@ public class ListFragment extends Fragment implements DotaButtonsDbCallback{
                         ExpandableListView eV = (ExpandableListView) parent;
                         HeroResponse response = (HeroResponse) eV.getExpandableListAdapter().getChild(groupPosition, childPosition);
 
-                        if(position == 2)
+                        if(position == adapters.size()-1)
                             showFavEntryMenu(view, response);
                         else
                             showListEntryMenu(view, response);

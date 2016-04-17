@@ -123,7 +123,11 @@ public enum Heroes {
 	REPORTER(R.drawable.reporter_icon, "Reporter"),
 	SHOPKEEPER(R.drawable.shopkepper_icon, "Shop Keeper"),
 	CREEP(R.drawable.creep_icon, "Creep"),
-	GLADOS(R.drawable.glados_icon, "Glados");
+	GLADOS(R.drawable.glados_icon, "Glados"),
+
+	SINGSING(R.drawable.singsing_icon, "SingSing"),
+	BULLDOG(R.drawable.bulldog_icon, "AdmiralBulldog"),
+	MISC(R.drawable.empty_icon, "Misc");
 	
 	
 	private Heroes(int image, String name){
